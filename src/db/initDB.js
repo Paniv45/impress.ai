@@ -13,7 +13,7 @@ function initiateDB() {
 
   request.onsuccess = (event) => {
     db = event.target.result;
-    console.log("IndexedDB reasy to use!");
+    console.log("IndexedDB ready to use!");
   };
 
   request.onupgradeneeded = (event) => {
@@ -112,31 +112,32 @@ function initiateDB() {
 
   const deleteUser = (id) => {
     return new Promise((resolve, reject) => {
-      console.log("deleteUser", id);
-      try {
-        const transaction = db.transaction([storeName], "readwrite");
-        const store = transaction.objectStore(storeName);
-        const request = store.delete(parseInt(id));
-        request.onsuccess = (event) => {
-          console.log("deleteUser success", event);
-          resolve({
-            success: true,
-            result: event.target.result,
-          });
-        };
-        request.onerror = (event) => {
-          reject({
-            success: false,
-            message: event.target.error,
-          });
-        };
-      } catch (e) {
-        console.log(e);
-      }
+      const transaction = db.transaction([storeName], "readwrite");
+      const store = transaction.objectStore(storeName);
+      const request = store.delete(parseInt(id));
+
+      request.onsuccess = (event) => {
+        resolve({
+          success: true,
+        });
+      };
+
+      request.onerror = (event) => {
+        reject({
+          success: false,
+          message: event.target.error,
+        });
+      };
     });
   };
 
-  return { addUser, getUsers, editUser, deleteUser };
+  return {
+    addUser,
+    getUsers,
+    editUser,
+    deleteUser,
+  };
 }
 
-export default initiateDB;
+export default initiateDB; // Exporting the function itself
+

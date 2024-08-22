@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Input, Button } from "antd";
 
 const InputHandler = ({ onSubmit, editMode = false }) => {
   const [name, setName] = useState("");
@@ -8,27 +9,27 @@ const InputHandler = ({ onSubmit, editMode = false }) => {
     e.preventDefault();
     if (!name || !email) return;
     onSubmit({ name, email });
+    setName("");
+    setEmail("");
   };
 
   return (
     <div className="header-box">
-      <input
-        type="text"
+      <Input
         placeholder="Name"
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        style={{ marginBottom: 10 }}
       />
-      <input
-        type="text"
+      <Input
         placeholder="Email"
-        onChange={(e) => {
-          setEmail(e.target.value);
-        }}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        style={{ marginBottom: 10 }}
       />
-      <button type="primary">
+      <Button type="primary" onClick={handleSubmit}>
         {!!editMode ? "Edit user" : "Add user"}
-      </button>
+      </Button>
     </div>
   );
 };
